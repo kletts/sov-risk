@@ -57,8 +57,7 @@ read_sovbonds <- function(
             across(starts_with("Yield"), ~parse_number(.x, na = c("", "NA", "n.a."))), 
             across(starts_with("ZCPrice"), ~parse_number(.x, na = c("", "NA", "n.a."))), 
             LastChange = lastupdate(LastChange), 
-            Issuer=capwords(cntry), 
-            YieldPrev = YieldLast - YieldChg6MBP/100) %>% 
+            Issuer=capwords(cntry)) %>% 
         drop_na(ResidualMaturityYrs) } 
 
 date_chg <- function(x, lastchg) { 
