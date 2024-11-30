@@ -36,6 +36,11 @@ read_ratings <- function()  {
                Fitch = factor(Fitch, levels=ratings.fitch, ordered=TRUE), 
                AsatDt = Sys.Date())  } 
 
+lastupdate <- function(x) { 
+  x <- as.Date(paste(x, year(Sys.Date())), format="%d %b %Y")
+  if (max(x) > Sys.Date()) { 
+    x <- x - years(1) } 
+  return(x) }
 
 read_sovbonds <- function(
         cntry=c("new-zealand", "australia", "united-states", "india", "united-kingdom", "japan")) { 
@@ -51,7 +56,7 @@ read_sovbonds <- function(
             ResidualMaturityYrs =convert_maturity(ResidualMaturityYrs),
             across(starts_with("Yield"), ~parse_number(.x, na = c("", "NA", "n.a."))), 
             across(starts_with("ZCPrice"), ~parse_number(.x, na = c("", "NA", "n.a."))), 
-            LastChange = as.Date(paste(LastChange, "2022"), "%d %b %Y"), 
+            LastChange = lastupdate(LastChange), 
             Issuer=capwords(cntry), 
             YieldPrev = YieldLast - YieldChg6MBP/100) %>% 
         drop_na(ResidualMaturityYrs) } 
