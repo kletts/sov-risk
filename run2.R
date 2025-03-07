@@ -6,7 +6,8 @@ html <- rvest::read_html(url)
 data <- rvest::html_table(html) 
 data <- purrr::map_dfr(data, read_yield) |> 
     mutate(ExtractDt = Sys.Date(), 
-           MaturityDt = YieldAt + Term) 
+           MaturityDt = YieldAt + Term, 
+           Term = as.character(Term)) 
 
 hist <- arrow::read_parquet("sov-bond-yields.parquet") 
 data <- hist |> bind_rows(data)
