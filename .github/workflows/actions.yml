@@ -2,6 +2,12 @@ on:
   workflow_dispatch:
   schedule:
   - cron: "26 1 * * 6"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   import-data:
     runs-on: ubuntu-latest
