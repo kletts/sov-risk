@@ -4,9 +4,8 @@ on:
   - cron: "26 1 * * 6"
 
 permissions:
-  contents: read
+  contents: write
   pages: write
-  id-token: write
 
 jobs:
   import-data:
