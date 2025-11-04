@@ -29,7 +29,9 @@ read_cds <- function(path, cntry) {
 hist <- arrow::read_parquet("sov-cds-rates.parquet") 
 data <- imap_dfr(list( 
     "AUS"="australia", 
-    "USA"="united-states"), 
+    "USA"="united-states", 
+    "JPN"="japan", 
+    "GBR"="uk"), 
     \(x,y) read_cds(x,y))  
 hist |> 
     dplyr::anti_join(data, 
