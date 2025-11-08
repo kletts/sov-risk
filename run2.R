@@ -16,8 +16,10 @@ arrow::write_parquet(data, "sov-bond-yields.parquet")
 
 # ----- CDS ---- 
 
+#https://au.investing.com/rates-bonds/japan-cds-5-year-usd-historical-data
+
 read_cds <- function(path, cntry) { 
-    url <- glue::glue("https://au.investing.com/rates-bonds/{path}-cds-5-years-usd-historical-data")
+    url <- file.path("https://au.investing.com/rates-bonds", path)
     html <- rvest::read_html(url)
     data <- rvest::html_table(html) 
     data[[1]] |>
@@ -27,11 +29,11 @@ read_cds <- function(path, cntry) {
         dplyr::select(Country, Date, Term, Price) } 
 
 hist <- arrow::read_parquet("sov-cds-rates.parquet") 
-data <- imap_dfr(list( 
-    "AUS"="australia", 
-    "USA"="united-states", 
-    "JPN"="japan", 
-    "GBR"="uk"), 
+data <- purrr::imap_dfr(list( 
+    "AUS"="australia-cds-5-years-usd-historical-data", 
+    "USA"="united-states-cds-5-years-usd-historical-data", 
+    "JPN"="japan-cds-5-year-usd-historical-data", 
+    "GBR"="uk-cds-5-years-gbp-historical-data"), 
     \(x,y) read_cds(x,y))  
 hist |> 
     dplyr::anti_join(data, 
